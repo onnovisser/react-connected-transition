@@ -1,6 +1,6 @@
 {
   "name": "react-connected-transition",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A React component that passes along data between leaving and entering components in order to easily animate the transition between them.",
   "jsnext:main": "dist/react-connected-transition.es.js",
   "module": "dist/react-connected-transition.es.js",
@@ -82,9 +82,9 @@
     "uglify-js": "^2.8.29"
   },
   "author": "Onno Visser <visser.onno@gmail.com>",
-  "homepage": "https://github.com/onnovisser/react-connected-animation#readme",
+  "homepage": "https://github.com/onnovisser/react-connected-transition#readme",
   "license": "MIT",
-  "repository": "onnovisser/react-connected-animation.git",
+  "repository": "onnovisser/react-connected-transition.git",
   "keywords": [
     "react",
     "animation",
@@ -92,6 +92,6 @@
     "connected-animation"
   ],
   "bugs": {
-    "url": "https://github.com/onnovisser/react-connected-animation/issues"
+    "url": "https://github.com/onnovisser/react-connected-transition/issues"
   }
 }
