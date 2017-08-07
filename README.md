@@ -14,6 +14,8 @@ Coming soon!
 npm install -S react-connected-transition
 ```
 
+> Note: The code uses promises. If you need to support older browsers, be sure to include a polyfill.
+
 ## Usage
 
 Import the `ConnectedTransition` component where you want to use it.
