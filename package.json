@@ -1,0 +1,97 @@
+{
+  "name": "react-connected-transition",
+  "version": "0.0.1",
+  "description": "A React component that passes along data between leaving and entering components in order to easily animate the transition between them.",
+  "jsnext:main": "dist/react-connected-transition.es.js",
+  "module": "dist/react-connected-transition.es.js",
+  "main": "dist/react-connected-transition.js",
+  "umd:main": "dist/react-connected-transition.umd.js",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "bump": "standard-version",
+    "build": "cross-env NODE_ENV=production npm-run-all clean -p rollup -p minify:* -s size",
+    "clean": "rimraf dist",
+    "start": "rollup -c -w",
+    "rollup": "rollup -c",
+    "minify:cjs": "uglifyjs $npm_package_main -cm toplevel -o $npm_package_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_main}.map",
+    "minify:umd": "uglifyjs $npm_package_umd_main -cm -o $npm_package_umd_main -p relative --in-source-map ${npm_package_umd_main}.map --source-map ${npm_package_umd_main}.map",
+    "size": "echo \"Gzipped Size: $(gzip-size $npm_package_main)\"",
+    "release": "npm run test && npm run build && npm run bump && git push --follow-tags && npm publish",
+    "test": "jest --coverage && npm run lint",
+    "test:watch": "jest --watch",
+    "format": "prettier --trailing-comma es5 --single-quote --print-width 80 --write \"{.,src/**,examples,examples/src/**}/*.{js,jsx}\"",
+    "lint": "eslint . --ext .js,.jsx --fix",
+    "lint-staged": "lint-staged"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "*.js": [
+      "format",
+      "lint",
+      "git add"
+    ]
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ],
+  "dependencies": {
+    "prop-types": "^15.5.10"
+  },
+  "peerDependencies": {
+    "react": "15.x || 16.x",
+    "react-dom": "15.x || 16.x"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.1",
+    "babel-jest": "^20.0.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^5.0.4",
+    "eslint": "3.19.0",
+    "eslint-config-airbnb": "^15.0.2",
+    "eslint-config-prettier": "^2.3.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "gh-pages": "^0.12.0",
+    "gzip-size-cli": "^2.0.0",
+    "jest": "^20.0.1",
+    "lint-staged": "^4.0.2",
+    "npm-run-all": "^4.0.2",
+    "pre-commit": "^1.2.2",
+    "preact": "^8.2.1",
+    "preact-compat": "^3.17.0",
+    "prettier": "^1.5.3",
+    "react": "next",
+    "react-dom": "next",
+    "react-test-renderer": "next",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.45.2",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-watch": "^4.3.1",
+    "standard-version": "^4.2.0",
+    "uglify-js": "^2.8.29"
+  },
+  "author": "Onno Visser <visser.onno@gmail.com>",
+  "homepage": "https://github.com/onnovisser/react-connected-animation#readme",
+  "license": "MIT",
+  "repository": "onnovisser/react-connected-animation.git",
+  "keywords": [
+    "react",
+    "animation",
+    "transition",
+    "connected-animation"
+  ],
+  "bugs": {
+    "url": "https://github.com/onnovisser/react-connected-animation/issues"
+  }
+}

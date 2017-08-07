@@ -1,0 +1,30 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "loose": true
+      }
+    ],
+    "stage-2",
+    "react"
+  ],
+  "env": {
+    "production": {
+      "plugins": ["external-helpers"]
+    },
+    "test": {
+      "presets": [
+        [
+          "env",
+          {
+            "loose": true
+          }
+        ],
+        "stage-2",
+        "react"
+      ]
+    }
+  }
+}
