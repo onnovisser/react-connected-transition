@@ -1,5 +1,9 @@
 # react-connected-transition
 
+[![npm version](https://badge.fury.io/js/react-connected-transition.svg)](https://badge.fury.io/js/react-connected-transition)
+[![Build Status](https://travis-ci.org/onnovisser/react-connected-transition.svg?branch=master)](https://travis-ci.org/onnovisser/react-connected-transition)
+[![codecov](https://codecov.io/gh/onnovisser/react-connected-transition/branch/master/graph/badge.svg)](https://codecov.io/gh/onnovisser/react-connected-transition)
+
 A React component that passes along data between leaving and entering components in order to easily animate the transition between them.
 
 * * *
