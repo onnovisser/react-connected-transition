@@ -37,7 +37,7 @@ Wrap the component
 </ConnectedTransition>
 ```
 
-When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, each will have its `componentWillLeave` and `componentWillEnter` called respectively.
+When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `componentWillLeave` and `componentWillEnter` called respectively.
 
 * * *
 
@@ -50,10 +50,11 @@ When the `ConnectedTransition` unmounts and one with the same name mounts at the
   
   Component you intend to animate.
 
-  The following lifecycle hooks are called on them:
+  The following hooks are called on them:
 
    - [`componentWillEnter()`](#componentwillenter) 
    - [`componentWillLeave()`](#componentwillleave)
+   - [`getTransitionData()`](#getTransitionData)
 
   *The child components of `ConnectedTransition`'s with the same name don't have to be of the same type*
 
@@ -85,8 +86,9 @@ This is called on components whose `ConnectedTransition` parent has mounted and 
 
 ```js
 {
-  bounds, // as received from node.getBoundingClientRect()
-  style, // as received from window.getComputedStyle(node)
+  bounds, // as returned from node.getBoundingClientRect()
+  style, // as returned from window.getComputedStyle(node)
+  data, // additional data received from getTransitionData() hook
 }
 ```
 
@@ -103,3 +105,13 @@ componentWillLeave(from, to)
 This is called on components whose `ConnectedTransition` parent has its `exit`-prop set to `true`. It is only called when, at the same time, a `ConnectedTransition` with the same name has mounted or has its `exit`-prop set to `false`. **It is not called when unmounting**, as a `ConnectedTransition` waits for another to enter before it handles the transition, at which point the exiting component may already have unmounted.
 
 The bounds and style of `from` are those of the component this method is called upon.
+
+* * *
+
+### `getTransitionData()`
+
+```js
+getTransitionData()
+```
+
+This is called right before `componentWillLeave()` and `componentWillEnter()`. Return additional data here to pass to those methods
