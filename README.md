@@ -54,7 +54,7 @@ When the `ConnectedTransition` unmounts and one with the same name mounts at the
 
    - [`componentWillEnter()`](#componentwillenter) 
    - [`componentWillLeave()`](#componentwillleave)
-   - [`getTransitionData()`](#getTransitionData)
+   - [`getTransitionData()`](#gettransitiondata)
 
   *The child components of `ConnectedTransition`'s with the same name don't have to be of the same type*
 
