@@ -2,22 +2,65 @@ import React, { Component } from 'react';
 import renderer from 'react-test-renderer';
 import ConnectedTransition, { __transitions } from '../index';
 
+/* eslint-disable */
 class Element extends Component {
-  componentWillEnter() {} // eslint-disable-line
+  componentWillEnter() {}
 
-  componentWillLeave() {} // eslint-disable-line
+  componentWillLeave() {}
+
+  getTransitionData() {
+    return {
+      foo: 'foo',
+    };
+  }
 
   render() {
     return <div />;
   }
 }
 
+class OtherElement extends Component {
+  componentWillEnter() {}
+
+  componentWillLeave() {}
+
+  getTransitionData() {
+    return {
+      bar: 'bar',
+    };
+  }
+
+  render() {
+    return <div />;
+  }
+}
+/* eslint-enable */
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const enterSpy = jest.spyOn(Element.prototype, 'componentWillEnter');
-const leaveSpy = jest.spyOn(Element.prototype, 'componentWillEnter');
+const elementEnterSpy = jest.spyOn(Element.prototype, 'componentWillEnter');
+const elementLeaveSpy = jest.spyOn(Element.prototype, 'componentWillLeave');
+const otherElementEnterSpy = jest.spyOn(
+  OtherElement.prototype,
+  'componentWillEnter'
+);
+const otherElementLeaveSpy = jest.spyOn(
+  OtherElement.prototype,
+  'componentWillLeave'
+);
+
+const elementExpectedData = {
+  bounds: undefined,
+  style: {},
+  data: { foo: 'foo' },
+};
+const otherElementExpectedData = {
+  bounds: undefined,
+  style: {},
+  data: { bar: 'bar' },
+};
 
 jest.mock('react-dom', () => ({
   findDOMNode: () => ({
@@ -30,8 +73,10 @@ Object.defineProperty(window, 'getComputedStyle', {
 });
 
 afterEach(() => {
-  leaveSpy.mockReset();
-  enterSpy.mockReset();
+  elementEnterSpy.mockReset();
+  elementLeaveSpy.mockReset();
+  otherElementEnterSpy.mockReset();
+  otherElementLeaveSpy.mockReset();
 });
 
 describe('Connected Transition', () => {
@@ -51,20 +96,18 @@ describe('Connected Transition', () => {
       </ConnectedTransition>
     );
 
-    await expect(__transitions.name.enter.promise).resolves.toEqual({
-      bounds: undefined,
-      style: {},
-    });
-    expect(enterSpy).not.toHaveBeenCalled();
+    await expect(__transitions.name.enter.promise).resolves.toEqual(
+      elementExpectedData
+    );
+    expect(elementEnterSpy).not.toHaveBeenCalled();
     await sleep(100);
 
     tree.unmount();
 
-    await expect(__transitions.name.exit.promise).resolves.toEqual({
-      bounds: undefined,
-      style: {},
-    });
-    expect(leaveSpy).not.toHaveBeenCalled();
+    await expect(__transitions.name.exit.promise).resolves.toEqual(
+      elementExpectedData
+    );
+    expect(elementLeaveSpy).not.toHaveBeenCalled();
   });
 
   it('cleans up transitions after a timeout', done => {
@@ -95,7 +138,7 @@ describe('Connected Transition', () => {
     tree.update(
       <div>
         <ConnectedTransition name="name" key="2">
-          <Element />
+          <OtherElement />
         </ConnectedTransition>
         <ConnectedTransition name="name" key="1" exit>
           <Element />
@@ -104,8 +147,15 @@ describe('Connected Transition', () => {
     );
 
     await __transitions.name.enter.promise;
-    expect(enterSpy).toHaveBeenCalled();
-    expect(leaveSpy).toHaveBeenCalled();
+    await __transitions.name.exit.promise;
+    expect(otherElementEnterSpy).toBeCalledWith(
+      elementExpectedData,
+      otherElementExpectedData
+    );
+    expect(elementLeaveSpy).toBeCalledWith(
+      elementExpectedData,
+      otherElementExpectedData
+    );
   });
 
   it('handles entering after exiting', async () => {
@@ -125,13 +175,20 @@ describe('Connected Transition', () => {
           <Element />
         </ConnectedTransition>
         <ConnectedTransition name="name" key="2">
-          <Element />
+          <OtherElement />
         </ConnectedTransition>
       </div>
     );
 
     await __transitions.name.enter.promise;
-    expect(enterSpy).toHaveBeenCalled();
-    expect(leaveSpy).toHaveBeenCalled();
+    await __transitions.name.exit.promise;
+    expect(otherElementEnterSpy).toBeCalledWith(
+      elementExpectedData,
+      otherElementExpectedData
+    );
+    expect(elementLeaveSpy).toBeCalledWith(
+      elementExpectedData,
+      otherElementExpectedData
+    );
   });
 });
