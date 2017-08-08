@@ -41,6 +41,7 @@ class ConnectedTransition extends Component {
     return {
       bounds: this._node && this._node.getBoundingClientRect(),
       style: { ...window.getComputedStyle(this._node) },
+      data: this._component && this._component.getTransitionData(),
     };
   }
 
@@ -69,7 +70,7 @@ class ConnectedTransition extends Component {
 
   _callLeave = data => {
     if (this._component && this._component.componentWillLeave) {
-      this._component.componentWillLeave(data, this._data);
+      this._component.componentWillLeave(this._data, data);
     }
   };
 
