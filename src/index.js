@@ -2,8 +2,7 @@ import { Component, Children, cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import Deferred from './Deferred';
-
-const transitions = {};
+import transitions from './transitions';
 
 class ConnectedTransition extends Component {
   static propTypes = {
@@ -41,7 +40,9 @@ class ConnectedTransition extends Component {
     return {
       bounds: this._node && this._node.getBoundingClientRect(),
       style: { ...window.getComputedStyle(this._node) },
-      data: this._component && this._component.getTransitionData(),
+      data:
+        this._component.getTransitionData &&
+        this._component.getTransitionData(),
     };
   }
 
@@ -111,4 +112,3 @@ function clearTransitionWithDelay(name) {
 }
 
 export default ConnectedTransition;
-export { transitions as __transitions }; // For testing only
