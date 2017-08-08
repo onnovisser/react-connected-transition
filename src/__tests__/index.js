@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import renderer from 'react-test-renderer';
-import ConnectedTransition, { __transitions } from '../index';
+import ConnectedTransition from '../index';
+import transitions from '../transitions';
 
 /* eslint-disable */
 class Element extends Component {
@@ -96,7 +97,7 @@ describe('Connected Transition', () => {
       </ConnectedTransition>
     );
 
-    await expect(__transitions.name.enter.promise).resolves.toEqual(
+    await expect(transitions.name.enter.promise).resolves.toEqual(
       elementExpectedData
     );
     expect(elementEnterSpy).not.toHaveBeenCalled();
@@ -104,7 +105,7 @@ describe('Connected Transition', () => {
 
     tree.unmount();
 
-    await expect(__transitions.name.exit.promise).resolves.toEqual(
+    await expect(transitions.name.exit.promise).resolves.toEqual(
       elementExpectedData
     );
     expect(elementLeaveSpy).not.toHaveBeenCalled();
@@ -117,9 +118,9 @@ describe('Connected Transition', () => {
       </ConnectedTransition>
     );
 
-    expect(__transitions.name).toBeDefined();
+    expect(transitions.name).toBeDefined();
     setTimeout(() => {
-      expect(__transitions.name).toBeUndefined();
+      expect(transitions.name).toBeUndefined();
       done();
     }, 100);
   });
@@ -146,8 +147,8 @@ describe('Connected Transition', () => {
       </div>
     );
 
-    await __transitions.name.enter.promise;
-    await __transitions.name.exit.promise;
+    await transitions.name.enter.promise;
+    await transitions.name.exit.promise;
     expect(otherElementEnterSpy).toBeCalledWith(
       elementExpectedData,
       otherElementExpectedData
@@ -180,8 +181,8 @@ describe('Connected Transition', () => {
       </div>
     );
 
-    await __transitions.name.enter.promise;
-    await __transitions.name.exit.promise;
+    await transitions.name.enter.promise;
+    await transitions.name.exit.promise;
     expect(otherElementEnterSpy).toBeCalledWith(
       elementExpectedData,
       otherElementExpectedData

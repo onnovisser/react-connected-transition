@@ -3088,6 +3088,12 @@ lru-cache@^4.0.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+magic-string@^0.15.2:
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.15.2.tgz#0681d7388741bbc3addaa65060992624c6c09e9c"
+  dependencies:
+    vlq "^0.2.1"
+
 magic-string@^0.19.0:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.19.1.tgz#14d768013caf2ec8fdea16a49af82fc377e75201"
@@ -3934,6 +3940,14 @@ rollup-plugin-node-resolve@^3.0.0:
     is-module "^1.0.0"
     resolve "^1.1.6"
 
+rollup-plugin-replace@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-replace/-/rollup-plugin-replace-1.1.1.tgz#396315ded050a6ce43b9518a886a3f60efb1ea33"
+  dependencies:
+    magic-string "^0.15.2"
+    minimatch "^3.0.2"
+    rollup-pluginutils "^1.5.0"
+
 rollup-pluginutils@^1.5.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-1.5.2.tgz#1e156e778f94b7255bfa1b3d0178be8f5c552408"
@@ -4388,7 +4402,7 @@ ua-parser-js@^0.7.9:
   version "0.7.14"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
 
-uglify-js@2.8.29, uglify-js@^2.6:
+uglify-js@^2.6, uglify-js@^2.8.29:
   version "2.8.29"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.29.tgz#29c5733148057bb4e1f75df35b7a9cb72e6a59dd"
   dependencies:

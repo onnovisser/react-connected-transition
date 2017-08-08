@@ -6,6 +6,7 @@
   "module": "dist/react-connected-transition.es.js",
   "main": "dist/react-connected-transition.js",
   "umd:main": "dist/react-connected-transition.umd.js",
+  "browser": "dist/react-connected-transition.umd.js",
   "files": [
     "src",
     "dist"
@@ -77,6 +78,7 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.1.0",
     "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^1.1.1",
     "rollup-watch": "^4.3.1",
     "standard-version": "^4.2.0",
     "uglify-js": "^2.8.29"
