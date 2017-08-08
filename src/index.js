@@ -16,13 +16,6 @@ class ConnectedTransition extends Component {
     exit: false,
   };
 
-  constructor() {
-    super();
-
-    this._callEnter = this._callEnter.bind(this);
-    this._callLeave = this._callLeave.bind(this);
-  }
-
   componentDidMount() {
     this._node = findDOMNode(this);
     if (!this.props.exit) this._onEnter();
@@ -67,22 +60,26 @@ class ConnectedTransition extends Component {
     clearTransitionWithDelay(name);
   }
 
-  _callEnter(data) {
+  _callEnter = data => {
     // It's possible for the component to be unmounted before this is called, so double-check here
     if (this._component && this._component.componentWillEnter) {
       this._component.componentWillEnter(data, this._data);
     }
-  }
+  };
 
-  _callLeave(data) {
+  _callLeave = data => {
     if (this._component && this._component.componentWillLeave) {
       this._component.componentWillLeave(data, this._data);
     }
-  }
+  };
+
+  _setRef = ref => {
+    this._component = ref;
+  };
 
   render() {
     return cloneElement(Children.only(this.props.children), {
-      ref: c => (this._component = c),
+      ref: this._setRef,
     });
   }
 }

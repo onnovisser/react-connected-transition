@@ -3,6 +3,10 @@ import renderer from 'react-test-renderer';
 import ConnectedTransition, { __transitions } from '../index';
 
 class Element extends Component {
+  componentWillEnter() {} // eslint-disable-line
+
+  componentWillLeave() {} // eslint-disable-line
+
   render() {
     return <div />;
   }
@@ -12,8 +16,8 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const enterSpy = jest.spyOn(ConnectedTransition.prototype, '_callEnter');
-const leaveSpy = jest.spyOn(ConnectedTransition.prototype, '_callLeave');
+const enterSpy = jest.spyOn(Element.prototype, 'componentWillEnter');
+const leaveSpy = jest.spyOn(Element.prototype, 'componentWillEnter');
 
 jest.mock('react-dom', () => ({
   findDOMNode: () => ({
