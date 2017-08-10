@@ -1,7 +1,7 @@
 coverage
 dist
 node_modules
-npm-debug.log
+*.log
 .idea
 .vscode
 .DS_Store
