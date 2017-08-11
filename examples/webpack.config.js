@@ -7,11 +7,9 @@ const PROD = ENV === 'production';
 const PORT = process.env.PORT || 3000;
 const PATHS = {
   entries: {
-    '0-basic': path.join(__dirname, 'src/0-basic/index.jsx'),
-    '1-router': path.join(__dirname, 'src/1-router/index.jsx'),
-    '2-router-and-transitiongroup': path.join(
+    'router-and-transitiongroup': path.join(
       __dirname,
-      'src/2-router-and-transitiongroup/index.jsx'
+      'src/router-and-transitiongroup/index.jsx'
     ),
   },
   context: path.join(__dirname, 'src'),
@@ -39,7 +37,7 @@ const config = {
         exclude: /node_modules/,
       },
       {
-        test: /.*/,
+        test: /\.html$/,
         loader: `file-loader?name=[path][name].[ext]&context=${PATHS.context}`,
         exclude: /\.(jsx?)$/,
       },
