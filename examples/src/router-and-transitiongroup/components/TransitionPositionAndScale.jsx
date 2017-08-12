@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion/react';
 
-class CardImage extends Component {
-  state = {};
-
+class TransformPostionAndScale extends Component {
   componentWillEnter(from, to) {
     const animateFrom = {
       height: from.bounds.height,
@@ -26,16 +24,18 @@ class CardImage extends Component {
       <div className={wrapperClassName}>
         <div
           className={imageClassName}
-          style={{ backgroundImage: `url(${this.props.src})` }}
           ref={c => (this.node = c)}
-        />
+        >
+        {this.props.children}
+        </div>
       </div>
     );
   }
 }
 
 const wrapperClassName = css`
-  width: 30%;
+  width: 100%;
+  height: 100%;
   position: relative;
 `;
 
@@ -45,7 +45,6 @@ const imageClassName = css`
   top: 0;
   width: 100%;
   height: 100%;
-  background: no-repeat center/cover;
 `;
 
-export default CardImage;
+export default TransformPostionAndScale;

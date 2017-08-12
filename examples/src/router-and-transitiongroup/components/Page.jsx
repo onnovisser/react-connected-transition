@@ -7,7 +7,7 @@ class Page extends Component {
     const { transitionState } = this.props;
     if (prevProps.transitionState !== transitionState)
       if (transitionState === 'exiting') {
-        TweenMax.to(this.node, 0.5, { opacity: 0 });
+        // TweenMax.to(this.node, 0.5, { opacity: 0 });
       } else if (transitionState === 'entering') {
         // TweenMax.from(this.node, 0.5, { opacity: 0 });
       }

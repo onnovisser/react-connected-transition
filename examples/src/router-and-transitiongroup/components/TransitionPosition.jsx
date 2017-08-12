@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { css } from 'emotion/react';
 
-class Title extends Component {
-  state = {};
+class TransitionPosition extends Component {
 
   componentWillEnter(from, to) {
     const animateFrom = {
-      height: from.bounds.height,
-      width: from.bounds.width,
       x: from.bounds.left - to.bounds.left,
       y: from.bounds.top - to.bounds.top,
       ease: Power3.easeInOut,
@@ -22,16 +18,11 @@ class Title extends Component {
 
   render() {
     return (
-      <h1 className={className} ref={c => (this.node = c)}>
+      <div ref={c => (this.node = c)}>
         {this.props.children}
-      </h1>
+      </div>
     );
   }
 }
 
-const className = css`
-  font-weight: 300;
-  font-size: calc(20px + 2vw);
-`
-
-export default Title;
+export default TransitionPosition;
