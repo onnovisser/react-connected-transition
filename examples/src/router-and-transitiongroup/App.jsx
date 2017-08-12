@@ -1,35 +1,39 @@
-import React, { Component } from 'react';
-import { Route, Link, Switch, withRouter } from 'react-router-dom';
-import styled, { injectGlobal } from 'emotion/react';
+import React from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { injectGlobal } from 'emotion/react';
+import { shape, string } from 'prop-types';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import TransitionRouter from './containers/TransitionRouter';
 
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 
-class App extends Component {
-  render() {
-    return (
-      <TransitionGroup>
-        <TransitionRouter key={this.props.location.pathname.split('/')[1]}>
-          <Switch location={this.props.location}>
-            <Route path="/detail/:id" component={Detail} />
-            <Route component={Home} />
-          </Switch>
-        </TransitionRouter>
-      </TransitionGroup>
-    );
-  }
+App.propTypes = {
+  location: shape({
+    pathname: string.isRequired,
+  }).isRequired,
+};
+
+function App({ location }) {
+  return (
+    <TransitionGroup>
+      <TransitionRouter key={location.pathname.split('/')[1]}>
+        <Switch location={location}>
+          <Route path="/detail/:id" component={Detail} />
+          <Route component={Home} />
+        </Switch>
+      </TransitionRouter>
+    </TransitionGroup>
+  );
 }
 
 injectGlobal`
   html {
     height: 100%;
-    // background-image: linear-gradient(135deg, #c4deca, #698f93);
     font-family: -apple-system, BlinkMacSystemFont, 
-    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", 
-    "Fira Sans", "Droid Sans", "Helvetica Neue", 
-    sans-serif;
+      "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", 
+      "Fira Sans", "Droid Sans", "Helvetica Neue", 
+      sans-serif;
     color: #888;
   }
 

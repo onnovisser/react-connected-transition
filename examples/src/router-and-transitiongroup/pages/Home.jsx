@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import data from '../data/data';
 import Card from '../components/Card';
 import Page from '../components/Page';
 
-class Home extends Component {
-  renderCard = ([id, { image, title }]) =>
-    <Card key={id} {...{ id, image, title }} />;
-
-  render() {
+function Home() {
     return (
       <Page>
-        {Object.entries(data).map(this.renderCard)}
+        {Object.entries(data).map(renderCard)}
       </Page>
     );
   }
+
+function renderCard([id, { image, title }]) {
+  return <Card key={id} {...{ id, image, title }} />;
 }
 
 export default Home;

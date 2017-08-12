@@ -2,10 +2,12 @@ import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 import App from './App';
 
-export default function test(props) {
+function Demo() {
   return (
     <Router>
       <App />
     </Router>
   );
 }
+
+export default Demo;

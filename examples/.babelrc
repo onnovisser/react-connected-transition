@@ -5,7 +5,11 @@
       "env",
       {
         "modules": false,
-        "loose": true
+        "loose": true,
+        "useBuiltIns": true,
+        "targets": {
+          "browsers": ["> 1%"]
+        }
       }
     ],
     "stage-2"

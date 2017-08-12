@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { object, shape } from 'prop-types';
+import { object, node } from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 
 class TransitionState {
@@ -21,13 +21,13 @@ class TransitionState {
 }
 
 class TransitionRouter extends Component {
+  static propTypes = {
+    children: node.isRequired,
+  };
+
   static childContextTypes = {
     transition: object,
   };
-
-  constructor(props) {
-    super();
-  }
 
   transition = new TransitionState();
 
@@ -43,7 +43,9 @@ class TransitionRouter extends Component {
   };
 
   render() {
-    const { children, ...transitionProps } = this.props;
+    const { ...transitionProps } = this.props;
+    delete transitionProps.children;
+
     return (
       <Transition timeout={500} {...transitionProps}>
         {this.registerState}

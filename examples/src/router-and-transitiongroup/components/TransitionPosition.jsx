@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
+import { node } from 'prop-types';
+import { TweenMax, Power3 } from 'gsap';
 
 class TransitionPosition extends Component {
+  static propTypes = {
+    children: node.isRequired,
+  };
 
   componentWillEnter(from, to) {
-    const animateFrom = {
+    TweenMax.set(this.node, { zIndex: 10 });
+    TweenMax.from(this.node, 0.4, {
       x: from.bounds.left - to.bounds.left,
       y: from.bounds.top - to.bounds.top,
       ease: Power3.easeInOut,
-    };
-    TweenMax.set(this.node, { zIndex: 10 });
-    TweenMax.from(this.node, 0.4, animateFrom);
+      onComplete: () => TweenMax.set(this.node, { clearProps: 'all' }),
+    });
   }
 
   componentWillLeave() {

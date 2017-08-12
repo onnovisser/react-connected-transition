@@ -21,7 +21,7 @@ function Card({ id, title, image, transitionState }) {
 
   return (
     <CardLink to={`/detail/${id}`} exit={exit}>
-      <div className={imageClassName}>
+      <div className={imageClass}>
         <ConnectedTransition name={`image${id}`} exit={exit}>
           <TransitionPositionAndScale>
             <Image src={image} />
@@ -29,7 +29,7 @@ function Card({ id, title, image, transitionState }) {
         </ConnectedTransition>
       </div>
 
-      <div className={textClassName}>
+      <div className={textClass}>
         <ConnectedTransition name={`title${id}`} exit={exit}>
           <TransitionPosition>
             <Text heading>
@@ -42,31 +42,45 @@ function Card({ id, title, image, transitionState }) {
   );
 }
 
-const exitingClassName = css`
-  opacity: 0;
-  transition: opacity 400ms ease;
-`
 
 const CardLink = styled(Link)`
-  display: flex;
-  height: 25vw;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   background-color: white;
   box-shadow: 5px 5px 40px -1px rgba(0,0,0,.2);
-  ${p => p.exit && exitingClassName};
 
   &:nth-child(2n) {
     flex-direction: row-reverse;
   }
+
+  ${p => p.exit && css`
+    opacity: 0;
+    transition: opacity 400ms ease;
+  `};
+
+  @media (min-width: 600px) {
+    height: 25vw;
+  }
 `;
 
-const imageClassName = css`
-  width: 40%;
+const imageClass = css`
+  width: 100%;
+  height: 50vw;
+
+  @media (min-width: 600px) {
+    height: auto;
+    width: 40%;
+  }
 `;
 
-const textClassName = css`
+const textClass = css`
+  width: 100%;
   padding: 4vw;
-  width: 60%;
+
+  @media (min-width: 600px) {
+    width: 60%;
+  }
 `;
 
 export default withTransition(Card);

@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { css } from 'emotion/react';
+import { node } from 'prop-types';
+import { TweenMax, Power3 } from 'gsap';
 
 class TransformPostionAndScale extends Component {
+  static propTypes = {
+    children: node.isRequired,
+  };
+
   componentWillEnter(from, to) {
-    const animateFrom = {
+    TweenMax.set(this.node, { zIndex: 10 });
+    TweenMax.from(this.node, 0.4, {
       height: from.bounds.height,
       width: from.bounds.width,
       left: from.bounds.left - to.bounds.left,
       top: from.bounds.top - to.bounds.top,
       ease: Power3.easeInOut,
       transform: from.style.transform,
-    };
-    TweenMax.set(this.node, { zIndex: 10 });
-    TweenMax.from(this.node, 0.4, animateFrom);
+      onComplete: () => TweenMax.set(this.node, { clearProps: 'all' }),
+    });
   }
 
   componentWillLeave() {
@@ -21,25 +27,22 @@ class TransformPostionAndScale extends Component {
 
   render() {
     return (
-      <div className={wrapperClassName}>
-        <div
-          className={imageClassName}
-          ref={c => (this.node = c)}
-        >
-        {this.props.children}
+      <div className={wrapperClass}>
+        <div className={imageClass} ref={c => (this.node = c)}>
+          {this.props.children}
         </div>
       </div>
     );
   }
 }
 
-const wrapperClassName = css`
+const wrapperClass = css`
   width: 100%;
   height: 100%;
   position: relative;
 `;
 
-const imageClassName = css`
+const imageClass = css`
   position: absolute;
   left: 0;
   top: 0;

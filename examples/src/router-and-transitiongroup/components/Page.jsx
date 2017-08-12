@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import { css } from 'emotion/react';
+import styled from 'emotion/react';
+import { string, node } from 'prop-types';
 import withTransition from '../containers/withTransition';
 
 class Page extends Component {
+  static propTypes = {
+    children: node.isRequired,
+    transitionState: string.isRequired, // Supplied by withTransition HOC
+  };
+  
   componentDidUpdate(prevProps) {
     const { transitionState } = this.props;
     if (prevProps.transitionState !== transitionState)
@@ -14,27 +20,26 @@ class Page extends Component {
   }
 
   render() {
+    const { transitionState, children } = this.props;
+    const exit = transitionState === 'exiting' || transitionState === 'exited';
+
     return (
-      <div className={wrapperClassName} ref={c => (this.node = c)}>
-        <div className={innerClassName}>
-          {this.props.children}
-        </div>
-      </div>
+      <Styled exit={exit} innerRef={c => (this.node = c)}>
+        {children}
+      </Styled>
     );
   }
 }
 
-const wrapperClassName = css`
-  position: fixed;
-  top: 0;
-  left: 0;
+const Styled = styled.div`
   width: 100%;
   height: 100%;
-  overflow: auto;
-`;
-
-const innerClassName = css`
   padding: 25px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  z-index: ${p => p.exit ? 'initial' : 1};
 
   & > * + * {
     margin-top: 30px;
