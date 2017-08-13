@@ -1,26 +1,8 @@
 import React, { Component } from 'react';
 import { object, node } from 'prop-types';
-import Transition from 'react-transition-group/Transition';
+import TransitionComp from 'react-transition-group/Transition';
 
-class TransitionState {
-  listeners = [];
-  state = null;
-
-  setState(state) {
-    this.state = state;
-    this.listeners.forEach(f => f());
-  }
-
-  subscribe(f) {
-    this.listeners.push(f);
-  }
-
-  unsubscribe(f) {
-    this.listeners.splice(this.listeners.indexOf(f) >>> 0, 1);
-  }
-}
-
-class TransitionRouter extends Component {
+class Transition extends Component {
   static propTypes = {
     children: node.isRequired,
   };
@@ -47,11 +29,29 @@ class TransitionRouter extends Component {
     delete transitionProps.children;
 
     return (
-      <Transition timeout={500} {...transitionProps}>
+      <TransitionComp timeout={500} {...transitionProps}>
         {this.registerState}
-      </Transition>
+      </TransitionComp>
     );
   }
 }
 
-export default TransitionRouter;
+class TransitionState {
+  listeners = [];
+  state = null;
+
+  setState(state) {
+    this.state = state;
+    this.listeners.forEach(f => f());
+  }
+
+  subscribe(f) {
+    this.listeners.push(f);
+  }
+
+  unsubscribe(f) {
+    this.listeners.splice(this.listeners.indexOf(f) >>> 0, 1);
+  }
+}
+
+export default Transition;

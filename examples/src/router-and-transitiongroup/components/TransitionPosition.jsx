@@ -8,7 +8,6 @@ class TransitionPosition extends Component {
   };
 
   componentWillEnter(from, to) {
-    TweenMax.set(this.node, { zIndex: 10 });
     TweenMax.from(this.node, 0.4, {
       x: from.bounds.left - to.bounds.left,
       y: from.bounds.top - to.bounds.top,

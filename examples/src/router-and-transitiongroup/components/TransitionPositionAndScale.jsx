@@ -9,7 +9,6 @@ class TransformPostionAndScale extends Component {
   };
 
   componentWillEnter(from, to) {
-    TweenMax.set(this.node, { zIndex: 10 });
     TweenMax.from(this.node, 0.4, {
       height: from.bounds.height,
       width: from.bounds.width,

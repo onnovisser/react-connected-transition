@@ -3,7 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { injectGlobal } from 'emotion/react';
 import { shape, string } from 'prop-types';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import TransitionRouter from './containers/TransitionRouter';
+import Transition from './containers/Transition';
 
 import Home from './pages/Home';
 import Detail from './pages/Detail';
@@ -17,12 +17,12 @@ App.propTypes = {
 function App({ location }) {
   return (
     <TransitionGroup>
-      <TransitionRouter key={location.pathname.split('/')[1]}>
+      <Transition key={location.pathname.split('/')[1]}>
         <Switch location={location}>
           <Route path="/detail/:id" component={Detail} />
           <Route component={Home} />
         </Switch>
-      </TransitionRouter>
+      </Transition>
     </TransitionGroup>
   );
 }
