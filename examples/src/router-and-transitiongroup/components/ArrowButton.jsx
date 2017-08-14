@@ -6,9 +6,9 @@ const ArrowButton = styled(Link)`
   width: 60px;
   height: 60px;
   position: absolute;
-  right: ${p => p.flipped ? '0' : 'auto'};
+  right: ${p => (p.flipped ? '0' : 'auto')};
   top: calc(50% - 20px);
-  transform: ${p => p.flipped ? 'scaleX(-1)' : 'none'};  
+  transform: ${p => (p.flipped ? 'scaleX(-1)' : 'none')};  
   z-index: 10;
 
   &::before {

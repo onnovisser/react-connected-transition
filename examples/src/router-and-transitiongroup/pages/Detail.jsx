@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { string, shape } from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import ConnectedTransition from 'react-connected-transition';
-import { css } from 'emotion/react';
+import Transition from 'react-transition-group/Transition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import styled, { css } from 'emotion/react';
 import { TweenMax, Power3 } from 'gsap';
 import data from '../data/data';
 import Text from '../components/Text';
@@ -23,23 +25,18 @@ class Detail extends Component {
     }).isRequired,
   };
 
-  // componentDidUpdate() {
-  //   if (this.props.transitionState === 'entering') {
-
-  //   TweenMax.fromTo(
-  //     this.text,
-  //     0.6,
-  //     { opacity: 0, y: 80 },
-  //     { opacity: 1, y: 0, ease: Power3.easeOut},
-  //     1
-  //   );
-  //   }
-  // }
-
   onTitleEnter = (from, to) => {
     TweenMax.from(this.text, 0.4, {
       opacity: 0,
       y: from.bounds.top - to.bounds.top,
+      ease: Power3.easeInOut,
+    });
+  };
+
+  onTitleLeave = (from, to) => {
+    TweenMax.to(this.text, 0.4, {
+      opacity: 0,
+      y: to.bounds.top - from.bounds.top,
       ease: Power3.easeInOut,
     });
   };
@@ -60,37 +57,63 @@ class Detail extends Component {
 
     return (
       <Page>
-        <div className={imageClass}>
-          <BackButton to="/">Back to countries</BackButton>
-          {prevIndex && <ArrowButton to={`/detail/${prevIndex}`} />}
-          {nextIndex && <ArrowButton to={`/detail/${nextIndex}`} flipped />}
-          <ConnectedTransition name={`image${id}`} exit={exit}>
-            <TransitionPositionAndScale>
-              <Image src={item.image} />
-            </TransitionPositionAndScale>
-          </ConnectedTransition>
-        </div>
+        <TransitionGroup>
+          <Transition key={id} timeout={400}>
+            {state =>
+              <DetailView state={state}>
+                <div className={imageClass}>
+                  <BackButton to="/">Back to overview</BackButton>
+                  {prevIndex && <ArrowButton to={`/detail/${prevIndex}`} />}
+                  {nextIndex &&
+                    <ArrowButton to={`/detail/${nextIndex}`} flipped />}
+                  <ConnectedTransition name={`image${id}`} exit={exit}>
+                    <TransitionPositionAndScale>
+                      <Image src={item.image} />
+                    </TransitionPositionAndScale>
+                  </ConnectedTransition>
+                </div>
 
-        <ConnectedTransition
-          onEnter={this.onTitleEnter}
-          name={`title${id}`}
-          exit={exit}
-        >
-          <TransitionPosition>
-            <Text heading>
-              {item.title}
-            </Text>
-          </TransitionPosition>
-        </ConnectedTransition>
-        <div ref={c => (this.text = c)}>
-          <Text>
-            {item.description}
-          </Text>
-        </div>
+                <ConnectedTransition
+                  onEnter={this.onTitleEnter}
+                  onLeave={this.onTitleLeave}
+                  name={`title${id}`}
+                  exit={exit}
+                >
+                  <TransitionPosition>
+                    <Text heading>
+                      {item.title}
+                    </Text>
+                  </TransitionPosition>
+                </ConnectedTransition>
+                <div ref={c => (this.text = c)}>
+                  <Text>
+                    {item.description}
+                  </Text>
+                </div>
+              </DetailView>}
+          </Transition>
+        </TransitionGroup>
       </Page>
     );
   }
 }
+
+const transitionStyles = {
+  entering: css`opacity: 1`,
+  entered: css`opacity: 1`,
+};
+
+const DetailView = styled.div`
+  position: absolute;
+  width: calc(100vw - 50px);
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+  ${p => transitionStyles[p.state]};
+
+  & > * + * {
+    margin-top: 30px;
+  }
+`;
 
 const imageClass = css`
   height: 50vw;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'emotion/react';
@@ -9,39 +9,72 @@ import Image from './Image';
 import TransitionPosition from '../components/TransitionPosition';
 import TransitionPositionAndScale from '../components/TransitionPositionAndScale';
 
-Card.propTypes = {
-  id: string.isRequired,
-  title: string.isRequired,
-  image: string.isRequired,
-  transitionState: string.isRequired, // Supplied by withTransition HOC
-};
+class Card extends Component {
+  static propTypes = {
+    id: string.isRequired,
+    title: string.isRequired,
+    image: string.isRequired,
+    transitionState: string.isRequired, // Supplied by withTransition HOC
+  };
 
-function Card({ id, title, image, transitionState }) {
-  const exit = transitionState === 'exiting' || transitionState === 'exited';
+  state = {
+    transitionEnter: false,
+  };
 
-  return (
-    <CardLink to={`/detail/${id}`} exit={exit}>
-      <div className={imageClass}>
-        <ConnectedTransition name={`image${id}`} exit={exit}>
-          <TransitionPositionAndScale>
-            <Image src={image} />
-          </TransitionPositionAndScale>
-        </ConnectedTransition>
-      </div>
+  onTransitionEnter = (from, to) => {
+    if (this.props.id === to.data.id) {
+      this.setState({ transitionEnter: true });
+    }
+  };
 
-      <div className={textClass}>
-        <ConnectedTransition name={`title${id}`} exit={exit}>
-          <TransitionPosition>
-            <Text heading>
-              {title}
-            </Text>
-          </TransitionPosition>
-        </ConnectedTransition>
-      </div>
-    </CardLink>
-  );
+  getID = () => ({
+    id: this.props.id,
+  });
+
+  render() {
+    const { id, title, image, transitionState } = this.props;
+    const pageExit =
+      transitionState === 'exiting' || transitionState === 'exited';
+
+    return (
+      <CardLink
+        to={`/detail/${id}`}
+        transitionState={transitionState}
+        transitionEnter={this.state.transitionEnter}
+      >
+        <div className={imageClass}>
+          <ConnectedTransition
+            name={`image${id}`}
+            exit={pageExit}
+            onEnter={this.onTransitionEnter}
+            getTransitionData={this.getID}
+          >
+            <TransitionPositionAndScale>
+              <Image src={image} />
+            </TransitionPositionAndScale>
+          </ConnectedTransition>
+        </div>
+
+        <div className={textClass}>
+          <ConnectedTransition name={`title${id}`} exit={pageExit}>
+            <TransitionPosition>
+              <Text heading>
+                {title}
+              </Text>
+            </TransitionPosition>
+          </ConnectedTransition>
+        </div>
+      </CardLink>
+    );
+  }
 }
 
+const transitionStyles = {
+  entering: css`opacity: 1`,
+  entered: css`opacity: 1`,
+  // exiting: css`opacity: 1`,
+  // exited: css`opacity: 1`,
+};
 
 const CardLink = styled(Link)`
   width: 100%;
@@ -49,15 +82,16 @@ const CardLink = styled(Link)`
   flex-wrap: wrap;
   background-color: white;
   box-shadow: 5px 5px 40px -1px rgba(0,0,0,.2);
+  opacity: 0;
+  transition: opacity 400ms ease;
 
   &:nth-child(2n) {
     flex-direction: row-reverse;
   }
 
-  ${p => p.exit && css`
-    opacity: 0;
-    transition: opacity 400ms ease;
-  `};
+  ${p => transitionStyles[p.transitionState]};
+
+  // ${p => p.transitionEnter && css`background: tomato`};
 
   @media (min-width: 600px) {
     height: 25vw;
@@ -76,6 +110,7 @@ const imageClass = css`
 
 const textClass = css`
   width: 100%;
+  min-height: 25vw;
   padding: 4vw;
 
   @media (min-width: 600px) {

@@ -8,7 +8,7 @@ class Page extends Component {
     children: node.isRequired,
     transitionState: string.isRequired, // Supplied by withTransition HOC
   };
-  
+
   componentDidUpdate(prevProps) {
     const { transitionState } = this.props;
     if (prevProps.transitionState !== transitionState)
@@ -39,7 +39,7 @@ const Styled = styled.div`
   left: 0;
   top: 0;
   overflow: auto;
-  z-index: ${p => p.exit ? 'initial' : 1};
+  z-index: ${p => (p.exit ? 'initial' : 1)};
 
   & > * + * {
     margin-top: 30px;
