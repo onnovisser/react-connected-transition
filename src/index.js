@@ -9,10 +9,16 @@ class ConnectedTransition extends Component {
     name: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     exit: PropTypes.bool,
+    onEnter: PropTypes.func,
+    onLeave: PropTypes.func,
+    getTransitionData: PropTypes.func,
   };
 
   static defaultProps = {
     exit: false,
+    onEnter: noop,
+    onLeave: noop,
+    getTransitionData: noop,
   };
 
   componentDidMount() {
@@ -41,8 +47,9 @@ class ConnectedTransition extends Component {
       bounds: this._node && this._node.getBoundingClientRect(),
       style: { ...window.getComputedStyle(this._node) },
       data:
-        this._component.getTransitionData &&
-        this._component.getTransitionData(),
+        (this._component.getTransitionData &&
+          this._component.getTransitionData()) ||
+        this.props.getTransitionData(),
     };
   }
 
@@ -67,12 +74,14 @@ class ConnectedTransition extends Component {
     if (this._component && this._component.componentWillEnter) {
       this._component.componentWillEnter(data, this._data);
     }
+    this.props.onEnter(data, this._data);
   };
 
   _callLeave = data => {
     if (this._component && this._component.componentWillLeave) {
       this._component.componentWillLeave(this._data, data);
     }
+    this.props.onLeave(this._data, data);
   };
 
   _setRef = ref => {
@@ -110,5 +119,7 @@ function clearTransitionWithDelay(name) {
     delete transitions[name];
   }, 100);
 }
+
+function noop() {}
 
 export default ConnectedTransition;

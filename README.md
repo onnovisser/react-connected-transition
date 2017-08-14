@@ -29,7 +29,7 @@ Import the `ConnectedTransition` component where you want to use it.
 import ConnectedTransition from 'react-connected-transition';
 ```
 
-Wrap the component 
+Wrap the component you intend to animate.
 
 ```jsx
 <ConnectedTransition name="uniqueName1">
@@ -37,7 +37,7 @@ Wrap the component
 </ConnectedTransition>
 ```
 
-When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `componentWillLeave` and `componentWillEnter` called respectively.
+When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `componentWillLeave()` and `componentWillEnter()` called respectively.
 
 * * *
 
@@ -46,7 +46,7 @@ When the `ConnectedTransition` unmounts and one with the same name mounts at the
 ### Props
 
 * #### children
-  `PropTypes.instanceOf(Component)`
+  `PropTypes.element`
   
   Component you intend to animate.
 
@@ -62,13 +62,13 @@ When the `ConnectedTransition` unmounts and one with the same name mounts at the
   
   `PropTypes.string`
 
-  Unique name to find the related transitioning component.
+  A unique name to find the related transitioning component.
 
 * #### exit
   
   `PropTypes.bool`
 
-  By default, the `ConnectedTransition` component waits for its child to unmount before sending its data the mounting component with the same name. When using `react-transition-group`, a component will stay mounted for the duration of the transition before unmounting. To tell the `ConnectedTransition` to expect a transtion, pass `exit={true}` when exiting.
+  By default, the `ConnectedTransition` component waits for its child to unmount before sending its data to the mounting component with the same name. When using `react-transition-group`, a component will stay mounted for the duration of the transition before unmounting. To tell the `ConnectedTransition` to expect a transtion, pass `exit={true}` when exiting.
 
 * * *
 
