@@ -9,16 +9,6 @@ class Page extends Component {
     transitionState: string.isRequired, // Supplied by withTransition HOC
   };
 
-  componentDidUpdate(prevProps) {
-    const { transitionState } = this.props;
-    if (prevProps.transitionState !== transitionState)
-      if (transitionState === 'exiting') {
-        // TweenMax.to(this.node, 0.5, { opacity: 0 });
-      } else if (transitionState === 'entering') {
-        // TweenMax.from(this.node, 0.5, { opacity: 0 });
-      }
-  }
-
   render() {
     const { transitionState, children } = this.props;
     const exit = transitionState === 'exiting' || transitionState === 'exited';

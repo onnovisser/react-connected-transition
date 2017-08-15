@@ -72,15 +72,12 @@ class Card extends Component {
 const transitionStyles = {
   entering: css`opacity: 1`,
   entered: css`opacity: 1`,
-  // exiting: css`opacity: 1`,
-  // exited: css`opacity: 1`,
 };
 
 const CardLink = styled(Link)`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  background-color: white;
   box-shadow: 5px 5px 40px -1px rgba(0,0,0,.2);
   opacity: 0;
   transition: opacity 400ms ease;
@@ -91,7 +88,7 @@ const CardLink = styled(Link)`
 
   ${p => transitionStyles[p.transitionState]};
 
-  // ${p => p.transitionEnter && css`background: tomato`};
+  ${p => p.transitionEnter && css`transition: none`};
 
   @media (min-width: 600px) {
     height: 25vw;
