@@ -15,7 +15,6 @@ class TransformPostionAndScale extends Component {
       left: from.bounds.left - to.bounds.left,
       top: from.bounds.top - to.bounds.top,
       ease: Power3.easeInOut,
-      transform: from.style.transform,
       onComplete: () => TweenMax.set(this.node, { clearProps: 'all' }),
     });
   }
@@ -24,9 +23,15 @@ class TransformPostionAndScale extends Component {
     TweenMax.set(this.node, { opacity: 0 });
   }
 
+  getTransitionData() {
+    return {
+      bounds: this.wrapper.getBoundingClientRect(),
+    };
+  }
+
   render() {
     return (
-      <div className={wrapperClass}>
+      <div className={wrapperClass} ref={c => (this.wrapper = c)}>
         <div className={imageClass} ref={c => (this.node = c)}>
           {this.props.children}
         </div>

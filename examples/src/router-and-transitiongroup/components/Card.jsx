@@ -22,7 +22,7 @@ class Card extends Component {
   };
 
   onTransitionEnter = (from, to) => {
-    if (this.props.id === to.data.id) {
+    if (this.props.id === to.id) {
       this.setState({ transitionEnter: true });
     }
   };
