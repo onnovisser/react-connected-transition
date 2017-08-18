@@ -1,5 +1,4 @@
 import { Component, Children, cloneElement } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import Deferred from './Deferred';
 import transitions from './transitions';
@@ -22,7 +21,6 @@ class ConnectedTransition extends Component {
   };
 
   componentDidMount() {
-    this._node = findDOMNode(this);
     if (!this.props.exit) this._onEnter();
   }
 
@@ -44,12 +42,9 @@ class ConnectedTransition extends Component {
 
   _getData() {
     return {
-      bounds: this._node && this._node.getBoundingClientRect(),
-      style: { ...window.getComputedStyle(this._node) },
-      data:
-        (this._component.getTransitionData &&
-          this._component.getTransitionData()) ||
-        this.props.getTransitionData(),
+      ...(this._component.getTransitionData &&
+        this._component.getTransitionData()),
+      ...this.props.getTransitionData(),
     };
   }
 
