@@ -37,7 +37,7 @@ Wrap the component you intend to animate.
 </ConnectedTransition>
 ```
 
-When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `componentWillLeave()` and `componentWillEnter()` called respectively.
+When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `getTransitionData()` called, followed by `componentWillLeave()` and `componentWillEnter()` respectively.
 
 * * *
 
@@ -64,6 +64,36 @@ When the `ConnectedTransition` unmounts and one with the same name mounts at the
 
   A unique name to find the related transitioning component.
 
+* #### onEnter
+  
+  `PropTypes.func`
+
+  ```js
+  (from, to) => void
+  ```
+
+  Callback function similar to `componentWillEnter()`.
+
+* #### onLeave
+  
+  `PropTypes.func`
+
+  ```js
+  (from, to) => void
+  ```
+
+  Callback function similar to `componentWillLeave()`.
+
+* #### getTransitionData
+  
+  `PropTypes.func`
+
+  ```js
+  () => Data object
+  ```
+
+  Callback function similar to the `getTransitionData()` hook.
+
 * #### exit
   
   `PropTypes.bool`
@@ -77,41 +107,29 @@ When the `ConnectedTransition` unmounts and one with the same name mounts at the
 ### `componentWillEnter()`
 
 ```js
-componentWillEnter(from, to)
+(from, to) => void
 ```
 
 This is called on components whose `ConnectedTransition` parent has mounted and has its `exit`-prop not set to `true`. It is only called when, at the same time, a `ConnectedTransition` with the same name unmounts or has its `exit`-prop set to `true`.
 
-`from` and `to` have the following shape:
-
-```js
-{
-  bounds, // as returned from node.getBoundingClientRect()
-  style, // as returned from window.getComputedStyle(node)
-  data, // additional data received from getTransitionData() hook
-}
-```
-
-The bounds and style of `to` are those of the component this method is called upon.
+`from` and `to` are the data returned from the `getTranstionData()` hook, called on the leaving and entering component respectively.
 
 * * *
 
 ### `componentWillLeave()`
 
 ```js
-componentWillLeave(from, to)
+(from, to) => void
 ```
 
 This is called on components whose `ConnectedTransition` parent has its `exit`-prop set to `true`. It is only called when, at the same time, a `ConnectedTransition` with the same name has mounted or has its `exit`-prop set to `false`. **It is not called when unmounting**, as a `ConnectedTransition` waits for another to enter before it handles the transition, at which point the exiting component may already have unmounted.
-
-The bounds and style of `from` are those of the component this method is called upon.
 
 * * *
 
 ### `getTransitionData()`
 
 ```js
-getTransitionData()
+() => Data object
 ```
 
-This is called right before `componentWillLeave()` and `componentWillEnter()`. Return additional data here to pass to those methods
+This is called right before `componentWillLeave()` and `componentWillEnter()`. Return data here to pass to those methods. Data returned here will be merged with the data returned from the `getTransitionData` callback prop. When keys confict, the ones return from the callback prop take precedence.
