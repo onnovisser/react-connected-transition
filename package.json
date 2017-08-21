@@ -44,8 +44,7 @@
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
-    "react": "15.x || 16.x",
-    "react-dom": "15.x || 16.x"
+    "react": "15.x || 16.x"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.1",
@@ -71,7 +70,6 @@
     "preact-compat": "^3.17.0",
     "prettier": "^1.5.3",
     "react": "next",
-    "react-dom": "next",
     "react-test-renderer": "next",
     "rimraf": "^2.6.1",
     "rollup": "^0.45.2",
@@ -90,6 +88,7 @@
   "keywords": [
     "react",
     "animation",
+    "motion",
     "transition",
     "connected-animation"
   ],
