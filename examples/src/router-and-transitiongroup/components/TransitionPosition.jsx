@@ -20,6 +20,12 @@ class TransitionPosition extends Component {
     TweenMax.set(this.node, { opacity: 0 });
   }
 
+  getTransitionData() {
+    return {
+      bounds: this.node.getBoundingClientRect(),
+    };
+  }
+
   render() {
     return (
       <div ref={c => (this.node = c)}>

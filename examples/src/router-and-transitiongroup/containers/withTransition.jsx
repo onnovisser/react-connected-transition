@@ -22,9 +22,11 @@ function withTransition(WrappedComponent) {
     }
 
     render() {
-      const { transition } = this.context;
       return (
-        <WrappedComponent {...this.props} transitionState={transition.state} />
+        <WrappedComponent
+          {...this.props}
+          transitionState={this.context.transition.state}
+        />
       );
     }
   };

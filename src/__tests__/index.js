@@ -53,25 +53,11 @@ const otherElementLeaveSpy = jest.spyOn(
 );
 
 const elementExpectedData = {
-  bounds: undefined,
-  style: {},
-  data: { foo: 'foo' },
+  foo: 'foo',
 };
 const otherElementExpectedData = {
-  bounds: undefined,
-  style: {},
-  data: { bar: 'bar' },
+  bar: 'bar',
 };
-
-jest.mock('react-dom', () => ({
-  findDOMNode: () => ({
-    getBoundingClientRect: () => {},
-  }),
-}));
-
-Object.defineProperty(window, 'getComputedStyle', {
-  value: () => ({}),
-});
 
 afterEach(() => {
   elementEnterSpy.mockReset();
