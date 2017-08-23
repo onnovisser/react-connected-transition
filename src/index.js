@@ -42,7 +42,8 @@ class ConnectedTransition extends Component {
 
   _getData() {
     return {
-      ...(this._component.getTransitionData &&
+      ...(this._component &&
+        this._component.getTransitionData &&
         this._component.getTransitionData()),
       ...this.props.getTransitionData(),
     };
@@ -50,7 +51,6 @@ class ConnectedTransition extends Component {
 
   _onEnter() {
     const { name } = this.props;
-
     set(name, 'enter', (this._data = this._getData()));
     request(name, 'exit').then(this._callEnter);
     clearTransitionWithDelay(name);
@@ -84,9 +84,13 @@ class ConnectedTransition extends Component {
   };
 
   render() {
-    return cloneElement(Children.only(this.props.children), {
-      ref: this._setRef,
-    });
+    const { children } = this.props;
+    return cloneElement(
+      Children.only(children),
+      !isFunctionalComponent(children.type) && {
+        ref: this._setRef,
+      }
+    );
   }
 }
 
@@ -113,6 +117,12 @@ function clearTransitionWithDelay(name) {
   setTimeout(() => {
     delete transitions[name];
   }, 100);
+}
+
+function isFunctionalComponent(component) {
+  return (
+    typeof component === 'function' && !component.prototype.isReactComponent
+  );
 }
 
 function noop() {}

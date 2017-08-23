@@ -35,7 +35,7 @@ export default [
   {
     // browser-friendly UMD build
     entry: 'src/index.js',
-    dest: pkg.browser,
+    dest: pkg['umd:main'],
     format: 'umd',
     moduleName: 'ConnectedTransition',
     external: ['react', 'react-dom'],
