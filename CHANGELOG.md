@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/onnovisser/react-connected-transition/compare/v1.0.1...v1.0.2) (2017-08-23)
+
+
+### Bug Fixes
+
+* Only add ref to class components ([972838c](https://github.com/onnovisser/react-connected-transition/commit/972838c))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/onnovisser/react-connected-transition/compare/v1.0.0...v1.0.1) (2017-08-23)
 
