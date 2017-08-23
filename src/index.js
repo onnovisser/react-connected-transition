@@ -87,7 +87,7 @@ class ConnectedTransition extends Component {
     const { children } = this.props;
     return cloneElement(
       Children.only(children),
-      !isFunctionalComponent(children.type) && {
+      isClassComponent(children.type) && {
         ref: this._setRef,
       }
     );
@@ -119,9 +119,11 @@ function clearTransitionWithDelay(name) {
   }, 100);
 }
 
-function isFunctionalComponent(component) {
-  return (
-    typeof component === 'function' && !component.prototype.isReactComponent
+function isClassComponent(component) {
+  return !!(
+    component &&
+    component.prototype &&
+    component.prototype.isReactComponent
   );
 }
 
