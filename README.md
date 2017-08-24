@@ -16,6 +16,10 @@ Coming soon!
 ## Installation
 
 ```bash
+#yarn
+yarn add react-connected-transition
+
+# npm
 npm install -S react-connected-transition
 ```
 
@@ -38,6 +42,39 @@ Wrap the component you intend to animate.
 ```
 
 When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `getTransitionData()` called, followed by `componentWillLeave()` and `componentWillEnter()` respectively.
+
+
+```jsx
+// Example transition animation using GSAP
+class SomeComponent extends Component {
+  componentWillEnter(from, to) {
+    TweenMax.from(this.node, 0.4, {
+      x: from.bounds.left - to.bounds.left,
+      y: from.bounds.top - to.bounds.top,
+      ease: Power3.easeInOut,
+      onComplete: () => TweenMax.set(this.node, { clearProps: 'all' }),
+    });
+  }
+
+  componentWillLeave() {
+    TweenMax.set(this.node, { opacity: 0 });
+  }
+
+  getTransitionData() {
+    return {
+      bounds: this.node.getBoundingClientRect(),
+    };
+  }
+
+  render() {
+    return (
+      <div ref={c => (this.node = c)}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+```
 
 * * *
 
