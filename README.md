@@ -47,6 +47,12 @@ When the `ConnectedTransition` unmounts and one with the same name mounts at the
 ```jsx
 // Example transition animation using GSAP
 class SomeComponent extends Component {
+  getTransitionData() {
+    return {
+      bounds: this.node.getBoundingClientRect(),
+    };
+  }
+
   componentWillEnter(from, to) {
     TweenMax.from(this.node, 0.4, {
       x: from.bounds.left - to.bounds.left,
@@ -58,12 +64,6 @@ class SomeComponent extends Component {
 
   componentWillLeave() {
     TweenMax.set(this.node, { opacity: 0 });
-  }
-
-  getTransitionData() {
-    return {
-      bounds: this.node.getBoundingClientRect(),
-    };
   }
 
   render() {
@@ -89,9 +89,9 @@ class SomeComponent extends Component {
 
   The following hooks are called on them:
 
+   - [`getTransitionData()`](#gettransitiondata)
    - [`componentWillEnter()`](#componentwillenter) 
    - [`componentWillLeave()`](#componentwillleave)
-   - [`getTransitionData()`](#gettransitiondata)
 
   *The child components of `ConnectedTransition`'s with the same name don't have to be of the same type*
 
@@ -100,6 +100,16 @@ class SomeComponent extends Component {
   `PropTypes.string`
 
   A unique name to find the related transitioning component.
+
+* #### getTransitionData
+  
+  `PropTypes.func`
+
+  ```js
+  () => Data object
+  ```
+
+  Callback function similar to the `getTransitionData()` hook.
 
 * #### onEnter
   
@@ -121,16 +131,6 @@ class SomeComponent extends Component {
 
   Callback function similar to `componentWillLeave()`.
 
-* #### getTransitionData
-  
-  `PropTypes.func`
-
-  ```js
-  () => Data object
-  ```
-
-  Callback function similar to the `getTransitionData()` hook.
-
 * #### exit
   
   `PropTypes.bool`
@@ -140,6 +140,16 @@ class SomeComponent extends Component {
 * * *
 
 ## Reference
+
+### `getTransitionData()`
+
+```js
+() => Data object
+```
+
+This is called right before `componentWillLeave()` and `componentWillEnter()`. Return data here to pass to those methods. Data returned here will be merged with the data returned from the `getTransitionData` callback prop. When keys confict, the ones return from the callback prop take precedence.
+
+* * *
 
 ### `componentWillEnter()`
 
@@ -160,13 +170,3 @@ This is called on components whose `ConnectedTransition` parent has mounted and 
 ```
 
 This is called on components whose `ConnectedTransition` parent has its `exit`-prop set to `true`. It is only called when, at the same time, a `ConnectedTransition` with the same name has mounted or has its `exit`-prop set to `false`. **It is not called when unmounting**, as a `ConnectedTransition` waits for another to enter before it handles the transition, at which point the exiting component may already have unmounted.
-
-* * *
-
-### `getTransitionData()`
-
-```js
-() => Data object
-```
-
-This is called right before `componentWillLeave()` and `componentWillEnter()`. Return data here to pass to those methods. Data returned here will be merged with the data returned from the `getTransitionData` callback prop. When keys confict, the ones return from the callback prop take precedence.
