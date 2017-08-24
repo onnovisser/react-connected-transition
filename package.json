@@ -37,9 +37,6 @@
       "git add"
     ]
   },
-  "browserslist": [
-    "last 1 Chrome version"
-  ],
   "dependencies": {
     "prop-types": "^15.5.10"
   },
