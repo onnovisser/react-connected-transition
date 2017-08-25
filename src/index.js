@@ -1,23 +1,23 @@
 import { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import Deferred from './Deferred';
-import transitions from './transitions';
+import isClassComponent from './isClassComponent';
+import { set, request, clearTransitionWithDelay } from './transitions';
 
 class ConnectedTransition extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
-    exit: PropTypes.bool,
+    getTransitionData: PropTypes.func,
     onEnter: PropTypes.func,
     onLeave: PropTypes.func,
-    getTransitionData: PropTypes.func,
+    exit: PropTypes.bool,
   };
 
   static defaultProps = {
-    exit: false,
+    getTransitionData: noop,
     onEnter: noop,
     onLeave: noop,
-    getTransitionData: noop,
+    exit: false,
   };
 
   componentDidMount() {
@@ -92,39 +92,6 @@ class ConnectedTransition extends Component {
       }
     );
   }
-}
-
-function request(name, prop) {
-  return getTransition(name)[prop].promise;
-}
-
-function set(name, prop, value) {
-  getTransition(name)[prop].resolve(value);
-}
-
-function getTransition(name) {
-  return (
-    transitions[name] ||
-    (transitions[name] = {
-      enter: new Deferred(),
-      exit: new Deferred(),
-    })
-  );
-}
-
-// To prevent transitioning later on, when we're not doing so right away
-function clearTransitionWithDelay(name) {
-  setTimeout(() => {
-    delete transitions[name];
-  }, 100);
-}
-
-function isClassComponent(component) {
-  return !!(
-    component &&
-    component.prototype &&
-    component.prototype.isReactComponent
-  );
 }
 
 function noop() {}

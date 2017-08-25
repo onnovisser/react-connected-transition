@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import renderer from 'react-test-renderer';
 import ConnectedTransition from '../index';
-import transitions from '../transitions';
+import { transitions } from '../transitions';
 
 /* eslint-disable */
 class Element extends Component {
@@ -175,6 +175,56 @@ describe('Connected Transition', () => {
     );
     expect(elementLeaveSpy).toBeCalledWith(
       elementExpectedData,
+      otherElementExpectedData
+    );
+  });
+
+  it('Merges transition data', async () => {
+    function getTransitionData() {
+      return {
+        baz: 'baz',
+      };
+    }
+
+    const expectedData = {
+      baz: 'baz',
+      ...elementExpectedData,
+    };
+
+    const tree = renderer.create(
+      <div>
+        <ConnectedTransition
+          name="name"
+          getTransitionData={getTransitionData}
+          key="1"
+        >
+          <Element />
+        </ConnectedTransition>
+      </div>
+    );
+
+    await sleep(100);
+
+    tree.update(
+      <div>
+        <ConnectedTransition
+          name="name"
+          getTransitionData={getTransitionData}
+          key="1"
+          exit
+        >
+          <Element />
+        </ConnectedTransition>
+        <ConnectedTransition name="name" key="2">
+          <OtherElement />
+        </ConnectedTransition>
+      </div>
+    );
+
+    await transitions.name.enter.promise;
+    await transitions.name.exit.promise;
+    expect(otherElementEnterSpy).toBeCalledWith(
+      expectedData,
       otherElementExpectedData
     );
   });
