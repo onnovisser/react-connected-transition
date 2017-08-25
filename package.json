@@ -6,7 +6,6 @@
   "module": "dist/react-connected-transition.es.js",
   "main": "dist/react-connected-transition.js",
   "umd:main": "dist/react-connected-transition.umd.js",
-  "browser": "dist/react-connected-transition.umd.js",
   "files": [
     "src",
     "dist"
