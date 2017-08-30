@@ -228,4 +228,41 @@ describe('Connected Transition', () => {
       otherElementExpectedData
     );
   });
+
+  it('Allows for passive listeners', async () => {
+    const enter = jest.fn();
+    const leave = jest.fn();
+
+    const tree = renderer.create(
+      <div>
+        <ConnectedTransition name="name" key="1">
+          <Element />
+        </ConnectedTransition>
+        <ConnectedTransition name="name" passive onLeave={leave} key="3">
+          <div />
+        </ConnectedTransition>
+      </div>
+    );
+
+    await sleep(100);
+
+    tree.update(
+      <div>
+        <ConnectedTransition name="name" key="2">
+          <OtherElement />
+        </ConnectedTransition>
+        <ConnectedTransition name="name" key="1" exit>
+          <Element />
+        </ConnectedTransition>
+        <ConnectedTransition name="name" passive onEnter={enter} key="4">
+          <div />
+        </ConnectedTransition>
+      </div>
+    );
+
+    await transitions.name.enter.promise;
+    await transitions.name.exit.promise;
+    expect(enter).toBeCalledWith(elementExpectedData, otherElementExpectedData);
+    expect(leave).toBeCalledWith(elementExpectedData, otherElementExpectedData);
+  });
 });

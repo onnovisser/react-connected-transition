@@ -11,6 +11,7 @@ class ConnectedTransition extends Component {
     onEnter: PropTypes.func,
     onLeave: PropTypes.func,
     exit: PropTypes.bool,
+    passive: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -18,6 +19,7 @@ class ConnectedTransition extends Component {
     onEnter: noop,
     onLeave: noop,
     exit: false,
+    passive: false,
   };
 
   componentDidMount() {
@@ -50,17 +52,38 @@ class ConnectedTransition extends Component {
   }
 
   _onEnter() {
-    const { name } = this.props;
-    set(name, 'enter', (this._data = this._getData()));
-    request(name, 'exit').then(this._callEnter);
+    const { name, passive } = this.props;
+
+    if (passive) {
+      Promise.all([
+        request(name, 'exit'),
+        request(name, 'enter'),
+      ]).then(([from, to]) => {
+        this._data = to;
+        this._callEnter(from);
+      });
+    } else {
+      set(name, 'enter', (this._data = this._getData()));
+      request(name, 'exit').then(this._callEnter);
+    }
     clearTransitionWithDelay(name);
   }
 
   _onLeave() {
-    const { name } = this.props;
+    const { name, passive } = this.props;
 
-    set(name, 'exit', (this._data = this._getData()));
-    request(name, 'enter').then(this._callLeave);
+    if (passive) {
+      Promise.all([
+        request(name, 'exit'),
+        request(name, 'enter'),
+      ]).then(([from, to]) => {
+        this._data = from;
+        this._callLeave(to);
+      });
+    } else {
+      set(name, 'exit', (this._data = this._getData()));
+      request(name, 'enter').then(this._callLeave);
+    }
     clearTransitionWithDelay(name);
   }
 
