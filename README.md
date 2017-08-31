@@ -41,7 +41,7 @@ Wrap the component you intend to animate.
 </ConnectedTransition>
 ```
 
-When the `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `getTransitionData()` called, followed by `componentWillLeave()` and `componentWillEnter()` respectively.
+When a `ConnectedTransition` unmounts and one with the same name mounts at the same time, the child of each will have its `getTransitionData()` called, followed by `componentWillLeave()` and `componentWillEnter()` respectively.
 
 
 ```jsx
@@ -136,6 +136,12 @@ class SomeComponent extends Component {
   `PropTypes.bool`
 
   By default, the `ConnectedTransition` component waits for its child to unmount before sending its data to the mounting component with the same name. When using `react-transition-group`, a component will stay mounted for the duration of the transition before unmounting. To tell the `ConnectedTransition` to expect a transtion, pass `exit={true}` when exiting.
+
+* #### passive
+  
+  `PropTypes.bool`
+
+  A passive `ConnectedTransition` won't have its `getTransitionData()` hook called. `componentWillEnter()` or `componentWillLeave()` will be called when this component enters or leaves at the same time as another `ConnectedTransition` with the same name.
 
 * * *
 
