@@ -10,11 +10,10 @@ export default [
   {
     // Builds for bundlers (CommonJS, ES module)
     entry: 'src/index.js',
-    external: ['react', 'react-dom', 'prop-types'],
+    external: ['react', 'prop-types'],
     exports: 'default',
     globals: {
       react: 'React',
-      'react-dom': 'ReactDom',
       'prop-types': 'PropTypes',
     },
     useStrict: false,
@@ -38,11 +37,10 @@ export default [
     dest: pkg['umd:main'],
     format: 'umd',
     moduleName: 'ConnectedTransition',
-    external: ['react', 'react-dom'],
+    external: ['react'],
     exports: 'default',
     globals: {
       react: 'React',
-      'react-dom': 'ReactDOM',
       'prop-types': 'PropTypes',
     },
     useStrict: false,
