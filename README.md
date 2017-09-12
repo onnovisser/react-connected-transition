@@ -25,6 +25,12 @@ npm install -S react-connected-transition
 
 > Note: The code uses promises. If you need to support older browsers, be sure to include a polyfill.
 
+### CDN / External
+```html
+<script src="https://unpkg.com/react-connected-transition/dist/react-connected-transition.umd.js"></script>
+```
+The module will be exposed as ReactConnectedTransition.
+
 ## Usage
 
 Import the `ConnectedTransition` component where you want to use it.

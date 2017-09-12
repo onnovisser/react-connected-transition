@@ -36,7 +36,7 @@ export default [
     entry: 'src/index.js',
     dest: pkg['umd:main'],
     format: 'umd',
-    moduleName: 'ConnectedTransition',
+    moduleName: 'ReactConnectedTransition',
     external: ['react'],
     exports: 'default',
     globals: {
