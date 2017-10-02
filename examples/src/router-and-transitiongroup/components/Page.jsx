@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'emotion/react';
+import styled from 'react-emotion';
 import { string, node } from 'prop-types';
 import withTransition from '../containers/withTransition';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { injectGlobal } from 'emotion/react';
+import { injectGlobal } from 'react-emotion';
 import { shape, string } from 'prop-types';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from './containers/Transition';

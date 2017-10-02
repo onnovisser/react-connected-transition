@@ -14,5 +14,7 @@
     ],
     "stage-2"
   ],
-  "plugins": ["emotion/babel"]
+  "plugins": [
+    ["emotion", { "sourceMap": true }]
+  ]
 }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'emotion/react';
+import styled from 'react-emotion';
 
 const BackButton = styled(Link)`
   display: inline-block;

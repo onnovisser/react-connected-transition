@@ -1,4 +1,4 @@
-import styled, { css } from 'emotion/react';
+import styled, { css } from 'react-emotion';
 
 const defaultStyles = css`
 `;

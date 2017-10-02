@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import ConnectedTransition from 'react-connected-transition';
 import Transition from 'react-transition-group/Transition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import styled, { css } from 'emotion/react';
+import styled, { css } from 'react-emotion';
 import { TweenMax, Power3 } from 'gsap';
 import data from '../data/data';
 import Text from '../components/Text';

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'emotion/react';
+import styled from 'react-emotion';
 
 const ArrowButton = styled(Link)`
   display: block;

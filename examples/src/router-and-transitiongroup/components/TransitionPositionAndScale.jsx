@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { css } from 'emotion/react';
+import { css } from 'react-emotion';
 import { node } from 'prop-types';
 import { TweenMax, Power3 } from 'gsap';
 
