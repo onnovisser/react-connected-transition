@@ -9,15 +9,8 @@ const ENV = process.env.NODE_ENV || 'development';
 export default [
   {
     // Builds for bundlers (CommonJS, ES module)
-    entry: 'src/index.js',
-    external: ['react', 'prop-types'],
-    exports: 'default',
-    globals: {
-      react: 'React',
-      'prop-types': 'PropTypes',
-    },
-    useStrict: false,
-    sourceMap: true,
+    input: 'src/index.js',
+    external: ['react'],
     plugins: [
       babel({
         exclude: 'node_modules/**',
@@ -26,25 +19,29 @@ export default [
         'process.env.NODE_ENV': JSON.stringify(ENV),
       }),
     ],
-    targets: [
-      { dest: pkg.main, format: 'cjs' },
-      { dest: pkg.module, format: 'es' },
+    output: [
+      {
+        globals: {
+          react: 'React',
+        },
+        file: pkg.main,
+        format: 'cjs',
+        exports: 'default',
+      },
+      {
+        globals: {
+          react: 'React',
+        },
+        file: pkg.module,
+        format: 'es',
+        exports: 'default',
+      },
     ],
   },
   {
     // browser-friendly UMD build
-    entry: 'src/index.js',
-    dest: pkg['umd:main'],
-    format: 'umd',
-    moduleName: 'ReactConnectedTransition',
+    input: 'src/index.js',
     external: ['react'],
-    exports: 'default',
-    globals: {
-      react: 'React',
-      'prop-types': 'PropTypes',
-    },
-    useStrict: false,
-    sourceMap: true,
     plugins: [
       babel({
         exclude: 'node_modules/**',
@@ -58,5 +55,14 @@ export default [
         'process.env.NODE_ENV': JSON.stringify(ENV),
       }),
     ],
+    output: {
+      globals: {
+        react: 'React',
+      },
+      file: pkg['umd:main'],
+      format: 'umd',
+      exports: 'default',
+    },
+    moduleName: 'ReactConnectedTransition',
   },
 ];

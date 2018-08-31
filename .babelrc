@@ -1,29 +1,27 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "modules": false,
         "loose": true
       }
     ],
-    "stage-2",
-    "react"
+    "@babel/preset-react"
   ],
   "env": {
-    "production": {
-      "plugins": ["external-helpers"]
-    },
     "test": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
+            "targets": {
+              "esmodules": true
+            },
             "loose": true
           }
         ],
-        "stage-2",
-        "react"
+        "@babel/preset-react"
       ]
     }
   }
