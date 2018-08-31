@@ -1,6 +1,6 @@
 {
   "name": "react-connected-transition",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A React component that passes along data between leaving and entering components in order to easily animate the transition between them.",
   "jsnext:main": "dist/react-connected-transition.es.js",
   "module": "dist/react-connected-transition.es.js",
