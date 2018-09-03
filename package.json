@@ -1,10 +1,9 @@
 {
   "name": "react-connected-transition",
   "version": "1.1.2",
-  "description": "A React component that passes along data between leaving and entering components in order to easily animate the transition between them.",
-  "jsnext:main": "dist/react-connected-transition.es.js",
-  "module": "dist/react-connected-transition.es.js",
+  "description": "A React component that passes along data between leaving and entering components in order to easily implement shared element transitions.",
   "main": "dist/react-connected-transition.js",
+  "module": "dist/react-connected-transition.m.js",
   "umd:main": "dist/react-connected-transition.umd.js",
   "files": [
     "src",
@@ -12,19 +11,16 @@
   ],
   "scripts": {
     "bump": "standard-version",
-    "build": "cross-env NODE_ENV=production npm-run-all clean -p rollup -p minify:* -s size",
-    "clean": "rimraf dist",
-    "start": "rollup -c -w",
-    "rollup": "rollup -c",
-    "minify:cjs": "uglifyjs $npm_package_main -c -m toplevel --mangle-props regex=/^_/ -o $npm_package_main",
-    "minify:umd": "uglifyjs $npm_package_umd_main -c -m --mangle-props regex=/^_/ -o $npm_package_umd_main",
-    "size": "echo \"Gzipped Size: $(gzip-size $npm_package_main)\"",
+    "build": "microbundle --name ReactConnectedTransition --format es,umd,cjs --sourcemaps false --external React",
     "release": "npm run test && npm run build && npm run bump && git push --follow-tags && npm publish",
     "test": "jest --coverage && npm run lint",
     "test:watch": "jest --watch",
-    "format": "prettier --write \"{.,src/**,examples,examples/src/**}/*.{js,jsx}\"",
-    "lint": "eslint . --ext .js,.jsx --fix",
+    "format": "prettier --write \"{.,src/**}/*.js\"",
+    "lint": "eslint . --ext .js --fix",
     "lint-staged": "lint-staged"
+  },
+  "mangle": {
+    "regex": "^_"
   },
   "pre-commit": [
     "lint-staged"
@@ -40,38 +36,24 @@
     "react": "15.x || 16.x"
   },
   "devDependencies": {
-    "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "babel-core": "^7.0.0-0",
-    "babel-eslint": "^7.2.1",
+    "babel-eslint": "^9.0.0",
     "babel-jest": "^23.4.2",
-    "cross-env": "^5.2.0",
     "eslint": "5.4.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-react": "^7.11.1",
-    "gzip-size-cli": "^3.0.0",
     "jest": "^23.5.0",
     "lint-staged": "^7.2.2",
-    "npm-run-all": "^4.0.2",
+    "microbundle": "^0.6.0",
     "pre-commit": "^1.2.2",
-    "preact": "^8.2.1",
-    "preact-compat": "^3.17.0",
     "prettier": "^1.14.2",
-    "react": "next",
-    "react-test-renderer": "next",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.65.0",
-    "rollup-plugin-babel": "^4.0.2",
-    "rollup-plugin-commonjs": "^9.1.6",
-    "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-replace": "^2.0.0",
-    "rollup-watch": "^4.3.1",
+    "react": "^16.4.2",
+    "react-test-renderer": "^16.4.2",
     "standard-version": "^4.4.0",
     "uglify-js": "^3.4.8"
   },
@@ -84,7 +66,8 @@
     "animation",
     "motion",
     "transition",
-    "connected-animation"
+    "connected",
+    "shared-element"
   ],
   "bugs": {
     "url": "https://github.com/onnovisser/react-connected-transition/issues"
