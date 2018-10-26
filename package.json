@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "bump": "standard-version",
-    "build": "microbundle --name ReactConnectedTransition --format es,umd,cjs --sourcemaps false --external React",
+    "build": "microbundle --name ReactConnectedTransition --format es,umd,cjs --sourcemap false --globals react=React --compress false",
     "release": "npm run test && npm run build && npm run bump && git push --follow-tags && npm publish",
     "test": "jest --coverage && npm run lint",
     "test:watch": "jest --watch",
@@ -50,7 +50,7 @@
     "eslint-plugin-react": "^7.11.1",
     "jest": "^23.5.0",
     "lint-staged": "^7.2.2",
-    "microbundle": "^0.6.0",
+    "microbundle": "^0.7.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.14.2",
     "react": "^16.4.2",
