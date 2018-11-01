@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, forwardRef, useImperativeMethods } from 'react';
 import renderer from 'react-test-renderer';
 import ConnectedTransition from '../index';
 import { transitions } from '../transitions';
 
 /* eslint-disable */
-class Element extends Component {
+class ClassComponent extends Component {
   componentWillEnter() {}
 
   componentWillLeave() {}
@@ -20,7 +20,7 @@ class Element extends Component {
   }
 }
 
-class OtherElement extends Component {
+class OtherClassComponent extends Component {
   componentWillEnter() {}
 
   componentWillLeave() {}
@@ -35,42 +35,67 @@ class OtherElement extends Component {
     return <div />;
   }
 }
+
+const FunctionComponentWithRef = forwardRef((props, ref) => {
+  useImperativeMethods(ref, () => ({
+    getTransitionData() {
+      return {
+        baz: 'baz',
+      };
+    },
+  }));
+
+  return <div />;
+});
+
+function FunctionComponent(props) {
+  return <div />;
+}
 /* eslint-enable */
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const elementEnterSpy = jest.spyOn(Element.prototype, 'componentWillEnter');
-const elementLeaveSpy = jest.spyOn(Element.prototype, 'componentWillLeave');
-const otherElementEnterSpy = jest.spyOn(
-  OtherElement.prototype,
+const classComponentEnterSpy = jest.spyOn(
+  ClassComponent.prototype,
   'componentWillEnter'
 );
-const otherElementLeaveSpy = jest.spyOn(
-  OtherElement.prototype,
+const classComponentLeaveSpy = jest.spyOn(
+  ClassComponent.prototype,
+  'componentWillLeave'
+);
+const otherClassComponentEnterSpy = jest.spyOn(
+  OtherClassComponent.prototype,
+  'componentWillEnter'
+);
+const otherClassComponentLeaveSpy = jest.spyOn(
+  OtherClassComponent.prototype,
   'componentWillLeave'
 );
 
 const elementExpectedData = {
   foo: 'foo',
 };
-const otherElementExpectedData = {
+const otherClassComponentExpectedData = {
   bar: 'bar',
+};
+const functionComponentExpectedData = {
+  baz: 'baz',
 };
 
 afterEach(() => {
-  elementEnterSpy.mockReset();
-  elementLeaveSpy.mockReset();
-  otherElementEnterSpy.mockReset();
-  otherElementLeaveSpy.mockReset();
+  classComponentEnterSpy.mockReset();
+  classComponentLeaveSpy.mockReset();
+  otherClassComponentEnterSpy.mockReset();
+  otherClassComponentLeaveSpy.mockReset();
 });
 
 describe('Connected Transition', () => {
   it("renders it's child", () => {
     const tree = renderer.create(
       <ConnectedTransition name="name">
-        <Element />
+        <ClassComponent />
       </ConnectedTransition>
     );
     expect(tree.toJSON()).toMatchSnapshot();
@@ -79,14 +104,14 @@ describe('Connected Transition', () => {
   it('sets correct transition values on enter and exit', async () => {
     const tree = renderer.create(
       <ConnectedTransition name="name">
-        <Element />
+        <ClassComponent />
       </ConnectedTransition>
     );
 
     await expect(transitions.name.enter.promise).resolves.toEqual(
       elementExpectedData
     );
-    expect(elementEnterSpy).not.toHaveBeenCalled();
+    expect(classComponentEnterSpy).not.toHaveBeenCalled();
     await sleep(100);
 
     tree.unmount();
@@ -94,13 +119,34 @@ describe('Connected Transition', () => {
     await expect(transitions.name.exit.promise).resolves.toEqual(
       elementExpectedData
     );
-    expect(elementLeaveSpy).not.toHaveBeenCalled();
+    expect(classComponentLeaveSpy).not.toHaveBeenCalled();
+  });
+
+  it('works with a function component with forwarded ref', async () => {
+    const tree = renderer.create(
+      <ConnectedTransition name="name">
+        <FunctionComponentWithRef />
+      </ConnectedTransition>
+    );
+
+    await expect(transitions.name.enter.promise).resolves.toEqual(
+      functionComponentExpectedData
+    );
+    expect(classComponentEnterSpy).not.toHaveBeenCalled();
+    await sleep(100);
+
+    tree.unmount();
+
+    await expect(transitions.name.exit.promise).resolves.toEqual(
+      functionComponentExpectedData
+    );
+    expect(classComponentLeaveSpy).not.toHaveBeenCalled();
   });
 
   it('cleans up transitions after a timeout', done => {
     renderer.create(
       <ConnectedTransition name="name">
-        <Element />
+        <ClassComponent />
       </ConnectedTransition>
     );
 
@@ -111,11 +157,29 @@ describe('Connected Transition', () => {
     }, 100);
   });
 
+  it("doesn't call exit on mount", async () => {
+    renderer.create(
+      <div>
+        <ConnectedTransition name="name" exit>
+          <ClassComponent />
+        </ConnectedTransition>
+        <ConnectedTransition name="name">
+          <ClassComponent />
+        </ConnectedTransition>
+      </div>
+    );
+
+    await sleep(100);
+
+    expect(classComponentEnterSpy).not.toHaveBeenCalled();
+    expect(classComponentLeaveSpy).not.toHaveBeenCalled();
+  });
+
   it('handles entering before exiting', async () => {
     const tree = renderer.create(
       <div>
         <ConnectedTransition name="name" key="1">
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
       </div>
     );
@@ -125,23 +189,23 @@ describe('Connected Transition', () => {
     tree.update(
       <div>
         <ConnectedTransition name="name" key="2">
-          <OtherElement />
+          <OtherClassComponent />
         </ConnectedTransition>
         <ConnectedTransition name="name" key="1" exit>
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
       </div>
     );
 
     await transitions.name.enter.promise;
     await transitions.name.exit.promise;
-    expect(otherElementEnterSpy).toBeCalledWith(
+    expect(otherClassComponentEnterSpy).toBeCalledWith(
       elementExpectedData,
-      otherElementExpectedData
+      otherClassComponentExpectedData
     );
-    expect(elementLeaveSpy).toBeCalledWith(
+    expect(classComponentLeaveSpy).toBeCalledWith(
       elementExpectedData,
-      otherElementExpectedData
+      otherClassComponentExpectedData
     );
   });
 
@@ -149,7 +213,7 @@ describe('Connected Transition', () => {
     const tree = renderer.create(
       <div>
         <ConnectedTransition name="name" key="1">
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
       </div>
     );
@@ -159,23 +223,23 @@ describe('Connected Transition', () => {
     tree.update(
       <div>
         <ConnectedTransition name="name" key="1" exit>
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
         <ConnectedTransition name="name" key="2">
-          <OtherElement />
+          <OtherClassComponent />
         </ConnectedTransition>
       </div>
     );
 
     await transitions.name.enter.promise;
     await transitions.name.exit.promise;
-    expect(otherElementEnterSpy).toBeCalledWith(
+    expect(otherClassComponentEnterSpy).toBeCalledWith(
       elementExpectedData,
-      otherElementExpectedData
+      otherClassComponentExpectedData
     );
-    expect(elementLeaveSpy).toBeCalledWith(
+    expect(classComponentLeaveSpy).toBeCalledWith(
       elementExpectedData,
-      otherElementExpectedData
+      otherClassComponentExpectedData
     );
   });
 
@@ -198,7 +262,7 @@ describe('Connected Transition', () => {
           getTransitionData={getTransitionData}
           key="1"
         >
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
       </div>
     );
@@ -213,19 +277,19 @@ describe('Connected Transition', () => {
           key="1"
           exit
         >
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
         <ConnectedTransition name="name" key="2">
-          <OtherElement />
+          <OtherClassComponent />
         </ConnectedTransition>
       </div>
     );
 
     await transitions.name.enter.promise;
     await transitions.name.exit.promise;
-    expect(otherElementEnterSpy).toBeCalledWith(
+    expect(otherClassComponentEnterSpy).toBeCalledWith(
       expectedData,
-      otherElementExpectedData
+      otherClassComponentExpectedData
     );
   });
 
@@ -236,10 +300,10 @@ describe('Connected Transition', () => {
     const tree = renderer.create(
       <div>
         <ConnectedTransition name="name" key="1">
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
         <ConnectedTransition name="name" passive onLeave={leave} key="3">
-          <div />
+          <FunctionComponent />
         </ConnectedTransition>
       </div>
     );
@@ -249,20 +313,26 @@ describe('Connected Transition', () => {
     tree.update(
       <div>
         <ConnectedTransition name="name" key="2">
-          <OtherElement />
+          <OtherClassComponent />
         </ConnectedTransition>
         <ConnectedTransition name="name" key="1" exit>
-          <Element />
+          <ClassComponent />
         </ConnectedTransition>
         <ConnectedTransition name="name" passive onEnter={enter} key="4">
-          <div />
+          <FunctionComponent />
         </ConnectedTransition>
       </div>
     );
 
     await transitions.name.enter.promise;
     await transitions.name.exit.promise;
-    expect(enter).toBeCalledWith(elementExpectedData, otherElementExpectedData);
-    expect(leave).toBeCalledWith(elementExpectedData, otherElementExpectedData);
+    expect(enter).toBeCalledWith(
+      elementExpectedData,
+      otherClassComponentExpectedData
+    );
+    expect(leave).toBeCalledWith(
+      elementExpectedData,
+      otherClassComponentExpectedData
+    );
   });
 });

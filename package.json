@@ -33,7 +33,7 @@
     ]
   },
   "peerDependencies": {
-    "react": "15.x || 16.x"
+    "react": ">= 16.7"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -53,8 +53,8 @@
     "microbundle": "^0.7.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.14.2",
-    "react": "^16.4.2",
-    "react-test-renderer": "^16.4.2",
+    "react": "16.7.0-alpha.0",
+    "react-test-renderer": "16.7.0-alpha.0",
     "standard-version": "^4.4.0",
     "uglify-js": "^3.4.8"
   },

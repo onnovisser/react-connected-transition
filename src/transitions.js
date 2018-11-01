@@ -1,4 +1,4 @@
-import Deferred from './Deferred';
+import createDeferredPromise from './createDeferredPromise';
 
 const transitions = {};
 
@@ -14,8 +14,8 @@ function getTransition(name) {
   return (
     transitions[name] ||
     (transitions[name] = {
-      enter: new Deferred(),
-      exit: new Deferred(),
+      enter: createDeferredPromise(),
+      exit: createDeferredPromise(),
     })
   );
 }
